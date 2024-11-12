@@ -1,23 +1,28 @@
 terraform {
+  required_version = "~> 1.9"
+
   required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.0"
+    }
     random = {
       source  = "hashicorp/random"
       version = "3.0.1"
     }
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 3.26.0"
-    }
   }
-
-  required_version = ">= 0.15"
 
   backend "remote" {
-    organization = "<YOUR_TERRAFORM_ORG>"
+    organization = "andrzej"
 
     workspaces {
-      name = "sentinel-example"
+      name = "learn-terraform-sentinel"
     }
   }
-
 }
+
+provider "azurerm" {
+  features {}
+}
+
+provider "random" {}
