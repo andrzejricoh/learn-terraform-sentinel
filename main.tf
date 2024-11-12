@@ -44,6 +44,20 @@ resource "azurerm_subnet" "this" {
   virtual_network_name = azurerm_virtual_network.this.name
 }
 
+resource "azurerm_public_ip" "this" {
+  for_each = local.instance_map
+
+  name                = "${each.value}pip"
+  location            = azurerm_resource_group.this.location
+  resource_group_name = azurerm_resource_group.this.name
+  sku                 = "Standard"
+  domain_name_label   = trim(lower(substr(each.value, 0, 63)), "-")
+  allocation_method   = "Static"
+  zones               = ["1"]
+
+  tags = var.tags
+}
+
 resource "azurerm_network_interface" "this" {
   for_each = local.instance_map
 
